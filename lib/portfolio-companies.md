@@ -1,0 +1,317 @@
+# Pantera Portfolio Companies Reference
+
+This file contains the complete list of Pantera Capital portfolio companies used for detection in crypto news briefs.
+
+## Major Tokens/Protocols
+- Circle (USDC)
+- Solana (SOL)
+- Avalanche (AVAX)  
+- Polygon (MATIC)
+- Compound (COMP)
+- Uniswap (UNI)
+- Chainlink (LINK)
+- The Graph (GRT)
+- Polkadot (DOT)
+- Near Protocol (NEAR)
+- Cosmos (ATOM)
+- Filecoin (FIL)
+- Arbitrum (ARB)
+- Balancer (BAL)
+- Audius (AUDIO)
+- Livepeer (LPT)
+- Mina Protocol (MINA)
+- Zcash (ZEC)
+- Ampleforth (AMPL)
+
+## Companies & Platforms (A-Z)
+
+### A-B
+- 0x
+- 1inch, 1inch.exchange
+- 6529.io
+- Abra
+- Acala Network
+- Alchemy
+- Altius
+- Amber Group
+- Ampleforth
+- Anchor
+- Anchorage
+- Ancient8
+- Andalusia Labs
+- Ankr
+- API3
+- Apollo
+- aPriori
+- Arbitrum
+- Arcade.xyz
+- Arch Network
+- ASST
+- Audius
+- Aurora
+- AutoLotto
+- Avantis
+- Azra Games
+- B3 (NPC Labs)
+- Bakkt
+- Balancer Labs
+- Basecoin
+- Basis
+- BCB Group
+- BGOGO
+- Bitaccess
+- BitDAO
+- BitGo
+- BitOasis
+- BitPesa
+- Bitso
+- Bitstamp
+- Bittensor
+- Bitwise (BITB, ETHW)
+- Blockchain.com
+- Blockfolio
+- Bloom
+- BloXroute Labs
+- BMNR
+- Bounce Finance
+- Braavos
+- Braintrust
+- Brave
+- BTCjam
+
+### C-E
+- Cantor Equity Partners
+- Cega
+- Celer Network
+- Chain
+- Chainalysis
+- Chainflip
+- ChangeCoin
+- Chronicled
+- Circle
+- Civic
+- Codex Protocol
+- CoinDCX
+- Coinme
+- Coins.ph
+- Coinsuper
+- Computable Labs
+- Cosigned (Onyx)
+- Cosmos Network
+- Cypherium
+- DATA
+- DCOE
+- Definitive
+- DeSo
+- DIRT Protocol
+- DMarket
+- doc.ai
+- Dodo Exchange
+- Earn.com
+- Earth
+- Eco
+- EDX Markets
+- Enigma
+- ErisX
+- Ethena
+- Everclear (Connext)
+- Expand
+
+### F-H
+- Faraway
+- Fastbreaklabs
+- Few and Far
+- Figure
+- Filament
+- Filecoin
+- Flashbots
+- Flexa
+- Fordefi
+- FunFair Technologies
+- Futureswap
+- Gemini
+- Genopets
+- GEODNET
+- Gifto
+- Gliph
+- GlobeDX
+- Gondi (Florida St)
+- Guildfi
+- Handshake
+- Harbor
+- Hedge
+- Heights Labs
+- Helika
+- Hivemapper
+- Hyperspace
+
+### I-M
+- ICON
+- InfiniGods
+- Injective Protocol
+- InstaDApp
+- Jambo Wallet
+- Janover (DDC)
+- Jumbo Exchange
+- Kik
+- Kin Ecosystem
+- Kindred
+- Kinesis.money
+- Korbit
+- Kyber Network
+- LaunchKey
+- Leap Wallet
+- Leeway (Antic)
+- Lido
+- Liquity
+- Lithium Finance
+- Livepeer
+- Luda
+- M^0
+- Maecenas
+- MakersPlace
+- MarginFi Protocol
+- Maverick Protocol
+- Merit Circle
+- Merkle Data
+- Metalend
+- Metaloop
+- Metaplex
+- Metatheory
+- Metaverse.gg
+- Meter.io
+- Mezo
+- Mina Protocol
+- Mirror Protocol
+- MonkeyTilt
+- Moonfrost
+- Morph
+- Morpho
+
+### N-R
+- Near Protocol
+- Nexus
+- Nitra
+- Notional
+- Nova Labs
+- Numerai
+- Oasis Labs
+- Obol Network
+- ODX Pte. Ltd
+- Omise
+- Omni
+- Ondo
+- OpenEdge (Gradient)
+- OpenMind
+- OpenToken
+- OPSkins
+- Optic
+- Orderly
+- Origin Protocol
+- Paradex
+- Parallel
+- Perion
+- Perpetual Protocol
+- Pinata
+- Pintu
+- PLAY3
+- Polkadot
+- Polychain Capital
+- Pontem Network
+- Potion Labs
+- PowerTrade
+- Proof Group
+- Prysm
+- Pryze
+- PsyOptions
+- Quantstamp
+- Radius
+- Raiku
+- Rangers Protocol
+- Rarimo
+- Reflexer Labs
+- Revolving Games
+- Rialo
+- Ripio
+- Ripple
+
+### S-Z
+- Sahara Labs
+- SBET
+- Sender
+- Sentient
+- ShapeShift
+- Solana Labs
+- Space Runners
+- Stacked
+- Stader Labs
+- Staked
+- StarkWare Industries
+- Stride
+- Strike Protocol
+- Sturdy Finance
+- Subspace Labs
+- Sumer.money
+- Summoners Arena
+- Swim
+- Symbiotic
+- Synfutures
+- Synthetic Minds
+- Tagomi
+- TanX
+- Tari Labs
+- Teahouse
+- Temple Capital
+- Terra
+- The Block
+- Thruster
+- ThunderCore
+- TipLink
+- TON
+- TOP
+- Tradehill
+- TranScrypts
+- Transparent Systems
+- True Flip
+- TruStory
+- Unbound Finance
+- Unikrn
+- Uniswap Labs
+- Unit-E
+- Unstoppable Domains
+- UPEXI
+- Urbit
+- VALR
+- Vauld
+- Veem
+- Vega Protocol
+- Vigil
+- Virtue Poker
+- Waterfall
+- Whetstone
+- Wintermute
+- Worldcoin
+- Worldwide Webb
+- Wyre
+- Xapo
+- Xkit
+- YOLOrekt
+- Zama
+- Zcash
+
+## Additional Mentions
+- OpenSea
+- Magic Eden
+- Polymarket
+- FTX
+- Blockdaemon
+- Tendermint
+- Biconomy
+- StarkNet/Starknet
+- zkSync
+- Optimism
+- Base
+
+---
+*Total: 200+ portfolio companies tracked for news detection*
+*Last updated: 2024* 
