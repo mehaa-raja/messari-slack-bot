@@ -1,5 +1,4 @@
-const OpenAI = require('openai');
-require('dotenv').config();
+import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -152,7 +151,7 @@ function validateNewsletter(newsletter) {
   return passed >= 5; // Must pass at least 5/7 checks for new format
 }
 
-module.exports = { 
+export { 
   summarizeWithOpenAI, 
   validateNewsletter 
 }; 

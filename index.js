@@ -1,73 +1,67 @@
-require("dotenv").config();
-const { scrapeMessariWithPuppeteer } = require("./scrapeMessariWithPuppeteer");
-const { summarizeWithOpenAI, validateNewsletter } = require("./summarizeWithOpenAI");
-const { postToSlack } = require("./slack");
+import { scrapeMessariNews } from './lib/scraper.js';
+import { filterPortfolioMentions, detectPortfolioMentions, PANTERA_PORTFOLIO_COMPANIES } from './lib/filter.js';
+import { summarizeWithOpenAI } from './lib/openai.js';
+import { postToSlack } from './slack.js';
 
-console.log("🚀 Starting Crypto Daily Brief Bot...");
+const companies = PANTERA_PORTFOLIO_COMPANIES;
 
-async function runBot() {
+async function runBriefBot() {
   try {
-    console.log("📰 STEP 1: Scraping latest crypto news with Puppeteer...");
+    console.log('🚀 Starting Crypto Daily Brief Bot...');
+    console.log('📰 Scraping latest Messari articles...');
     
-    // Scrape articles using Puppeteer (no fallback - either works or fails)
-    const articles = await scrapeMessariWithPuppeteer();
+    const articles = await scrapeMessariNews();
+
+    console.log(`🔎 Found ${articles.length} articles.`);
     
-    if (!articles || articles.length === 0) {
-      throw new Error("No articles scraped from Messari");
+    // Detect portfolio company mentions with enhanced detection
+    const portfolioMentions = detectPortfolioMentions(articles, companies);
+    
+    console.log(`💎 ${portfolioMentions.length} Pantera-related stories found.`);
+    
+    if (portfolioMentions.length > 0) {
+      console.log('📊 Portfolio companies detected:');
+      portfolioMentions.forEach(mention => {
+        console.log(`   • ${mention.title} (${mention.detectedCompanies.join(', ')})`);
+      });
     }
-    
-    console.log(`✅ Successfully scraped ${articles.length} articles`);
-    
-    console.log("\n📝 STEP 2: Generating crypto daily brief...");
-    
-    // Format into crypto daily brief using OpenAI
-    const newsletter = await summarizeWithOpenAI(articles);
-    
-    if (!newsletter) {
-      throw new Error("Failed to generate daily brief from scraped articles");
+
+    console.log('✍️ Generating summary with OpenAI...');
+    const summary = await summarizeWithOpenAI(articles.slice(0, 7), portfolioMentions);
+
+    console.log('\n📋 DAILY BRIEF PREVIEW:');
+    console.log('═'.repeat(60));
+    console.log(summary.slice(0, 800) + (summary.length > 800 ? '...' : ''));
+    console.log('═'.repeat(60));
+
+    // Send to Slack if credentials are available
+    if (process.env.SLACK_BOT_TOKEN && process.env.SLACK_CHANNEL_ID) {
+      console.log('\n📤 Sending to Slack...');
+      await postToSlack(summary);
+      console.log('✅ Successfully sent to Slack!');
+    } else {
+      console.log('\n📋 Slack credentials not configured - displaying newsletter only');
     }
-    
-    // Validate newsletter quality
-    const isQualityNewsletter = validateNewsletter(newsletter);
-    
-    if (!isQualityNewsletter) {
-      console.log("⚠️  Daily brief quality below standards, but proceeding...");
-    }
-    
-    console.log("\n📋 PREVIEW - CRYPTO DAILY BRIEF:");
-    console.log("═".repeat(60));
-    console.log(newsletter.slice(0, 800) + "...");
-    console.log("═".repeat(60));
-    
-    console.log("\n📤 STEP 3: Sending to Slack...");
-    
-    // Send to Slack
-    await postToSlack(newsletter);
-    
-    console.log("✅ Crypto daily brief sent successfully!");
-    console.log(`📊 Final stats: ${articles.length} articles → ${newsletter.length} char brief`);
+
+    console.log(`\n📊 Final stats: ${articles.length} articles → ${portfolioMentions.length} portfolio mentions → ${summary.length} char brief`);
     
   } catch (error) {
-    console.error("❌ Daily brief bot failed:", error.message);
+    console.error('❌ Error:', error.message);
     
     // Provide specific guidance based on error type
-    if (error.message.includes('Puppeteer')) {
-      console.error("🤖 Puppeteer scraping issue - check browser dependencies or network");
-      console.error("💡 Try: npm install puppeteer --force");
+    if (error.message.includes('axios') || error.message.includes('Network')) {
+      console.error('🌐 Network issue - check connection or try again later');
     } else if (error.message.includes('OpenAI')) {
-      console.error("🧠 OpenAI formatting issue - check API key and quota");
-      console.error("💡 Verify OPENAI_API_KEY in your .env file");
+      console.error('🧠 OpenAI issue - check API key and quota');
+      console.error('💡 Verify OPENAI_API_KEY environment variable');
     } else if (error.message.includes('Slack')) {
-      console.error("💬 Slack delivery issue - check webhook URL");
-      console.error("💡 Verify SLACK_WEBHOOK_URL in your .env file");
-    } else if (error.message.includes('No articles')) {
-      console.error("📰 No articles found - Messari site may have changed");
-      console.error("💡 Check DOM selectors in scrapeMessariWithPuppeteer.js");
+      console.error('💬 Slack delivery issue - check credentials');
+      console.error('💡 Verify SLACK_BOT_TOKEN and SLACK_CHANNEL_ID variables');
     }
     
-    console.error("\n🚫 Bot stopped - no fallback to prevent sending outdated/hallucinated content");
+    console.error('\n🚫 Bot stopped to prevent sending invalid content');
     process.exit(1);
   }
 }
 
-runBot();
+runBriefBot();

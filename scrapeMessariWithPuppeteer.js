@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 
 async function scrapeMessariWithPuppeteer() {
   let browser;
@@ -151,4 +151,4 @@ async function scrapeMessariWithPuppeteer() {
   }
 }
 
-module.exports = { scrapeMessariWithPuppeteer }; 
+export { scrapeMessariWithPuppeteer }; 

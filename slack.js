@@ -1,5 +1,4 @@
-const axios = require("axios");
-require("dotenv").config();
+import axios from "axios";
 
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
 const SLACK_CHANNEL_ID = process.env.SLACK_CHANNEL_ID;
@@ -31,4 +30,4 @@ async function postToSlack(message) {
   }
 }
 
-module.exports = { postToSlack };
+export { postToSlack };
