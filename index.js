@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { scrapeMessariNews } from './lib/scraper.js';
 import { formatNewsWithOpenAI } from './lib/openai.js';
+import { detectPortfolioMentionsInText, PANTERA_PORTFOLIO_COMPANIES } from './lib/filter.js';
 import { postToSlack } from './slack.js';
 
 // Load environment variables
@@ -42,7 +43,13 @@ async function runBriefBot() {
       console.log('\n📋 Slack credentials not configured - displaying newsletter only');
     }
 
+    // Detect portfolio mentions for stats
+    const portfolioMentions = detectPortfolioMentionsInText(newsBrief.content, PANTERA_PORTFOLIO_COMPANIES);
+    
     console.log(`\n📊 Final stats: ${summary.length} char brief generated at ${newsBrief.generatedAt}`);
+    if (portfolioMentions.length > 0) {
+      console.log(`💎 Portfolio mentions: ${portfolioMentions.slice(0, 5).join(', ')}${portfolioMentions.length > 5 ? ` +${portfolioMentions.length - 5} more` : ''}`);
+    }
     if (newsBrief.sources && newsBrief.sources.length > 0) {
       console.log(`📄 Based on ${newsBrief.sources.length} sources`);
     }
