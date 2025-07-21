@@ -15,7 +15,8 @@ async function runBriefBot() {
     
     // Check for required environment variables
     if (!OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY environment variable is required for formatting');
+      console.error('❌ OPENAI_API_KEY environment variable is required');
+      process.exit(1);
     }
     
     console.log('📰 Generating comprehensive crypto news brief...');
@@ -23,7 +24,20 @@ async function runBriefBot() {
     const newsBrief = await scrapeMessariNews();
     
     if (!newsBrief || !newsBrief.content) {
-      throw new Error('Failed to generate news brief');
+      console.error('❌ Failed to generate news brief');
+      process.exit(1);
+    }
+
+    // Check if this is a fallback/error message - don't send to Slack
+    const isFallbackMessage = newsBrief.content.includes('Service temporarily unavailable') || 
+                             newsBrief.content.includes('technical issues') ||
+                             newsBrief.content.includes('fallback message');
+
+    if (isFallbackMessage) {
+      console.log('⚠️ Generated fallback message due to API issues');
+      console.log('🛑 Skipping Slack delivery to prevent sending error messages');
+      console.log('💡 Bot will retry tomorrow when APIs are available');
+      process.exit(0); // Exit gracefully without sending anything
     }
 
     console.log('✨ Formatting news brief with OpenAI...');
@@ -34,8 +48,8 @@ async function runBriefBot() {
     console.log(summary.slice(0, 800) + (summary.length > 800 ? '...' : ''));
     console.log('═'.repeat(60));
 
-    // Send to Slack if credentials are available
-    if (process.env.SLACK_BOT_TOKEN && process.env.SLACK_CHANNEL_ID) {
+    // Only send to Slack if we have real content (not fallback) and credentials
+    if (SLACK_BOT_TOKEN && SLACK_CHANNEL_ID) {
       console.log('\n📤 Sending to Slack...');
       await postToSlack(summary);
       console.log('✅ Successfully sent to Slack!');
@@ -58,7 +72,10 @@ async function runBriefBot() {
     console.error('❌ Error:', error.message);
     
     // Provide specific guidance based on error type
-    if (error.message.includes('axios') || error.message.includes('Network')) {
+    if (error.message.includes('429') || error.message.includes('rate limit')) {
+      console.error('🔒 API rate limit exceeded - bot will retry tomorrow');
+      console.error('💡 No message sent to prevent spam');
+    } else if (error.message.includes('axios') || error.message.includes('Network')) {
       console.error('🌐 Network issue - check connection or try again later');
     } else if (error.message.includes('Messari AI') || error.message.includes('AI error')) {
       console.error('🧠 Messari AI issue - check API key and service status');
@@ -82,5 +99,6 @@ console.log('🚀 Starting in:', process.cwd());
 
 runBriefBot().catch(error => {
   console.error('💥 Critical error:', error);
+  console.error('🛑 Exiting without sending to Slack to prevent error messages');
   process.exit(1);
 });
