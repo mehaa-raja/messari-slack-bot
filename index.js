@@ -69,4 +69,11 @@ async function runBriefBot() {
   }
 }
 
-runBriefBot();
+// Run the bot with proper error handling for production
+console.log('🌟 Environment:', process.env.NODE_ENV || 'development');
+console.log('🚀 Starting in:', process.cwd());
+
+runBriefBot().catch(error => {
+  console.error('💥 Critical error:', error);
+  process.exit(1);
+});
