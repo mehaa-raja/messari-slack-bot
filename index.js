@@ -45,7 +45,7 @@ async function runBriefBot() {
 
     console.log('\n📋 DAILY BRIEF PREVIEW:');
     console.log('═'.repeat(60));
-    console.log(summary.slice(0, 800) + (summary.length > 800 ? '...' : ''));
+    console.log(summary); // Show full content instead of slice(0, 800)
     console.log('═'.repeat(60));
 
     // Only send to Slack if we have real content (not fallback) and credentials
