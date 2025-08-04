@@ -58,11 +58,13 @@ async function runBriefBot() {
     }
 
     // Detect portfolio mentions for stats
-    const portfolioMentions = detectPortfolioMentionsInText(newsBrief.content, PANTERA_PORTFOLIO_COMPANIES);
+    const portfolioMentions = await detectPortfolioMentionsInText(newsBrief.content, PANTERA_PORTFOLIO_COMPANIES);
     
     console.log(`\n📊 Final stats: ${summary.length} char brief generated at ${newsBrief.generatedAt}`);
     if (portfolioMentions.length > 0) {
-      console.log(`💎 Portfolio mentions: ${portfolioMentions.slice(0, 5).join(', ')}${portfolioMentions.length > 5 ? ` +${portfolioMentions.length - 5} more` : ''}`);
+      const companies = portfolioMentions.map(m => m.company);
+      console.log(`💎 Main topic portfolio companies: ${companies.join(', ')}`);
+      console.log(`📝 Portfolio summaries generated for ${portfolioMentions.length} companies`);
     }
     if (newsBrief.sources && newsBrief.sources.length > 0) {
       console.log(`📄 Based on ${newsBrief.sources.length} sources`);
