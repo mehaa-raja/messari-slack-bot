@@ -28,20 +28,17 @@ async function runBriefBot() {
       process.exit(1);
     }
 
-    // Check if this is a fallback/error message - don't send to Slack
+    console.log('💎 Detecting portfolio mentions...');
+    const portfolioMentions = await detectPortfolioMentionsInText(newsBrief.content, PANTERA_PORTFOLIO_COMPANIES);
+    console.log(`💎 Found ${portfolioMentions.length} main topic portfolio companies`);
+    
+    console.log('✨ Formatting news brief with OpenAI...');
+    const summary = await formatNewsWithOpenAI(newsBrief.content, portfolioMentions);
+
+    // Check if this is a fallback/error message - don't send to Slack but still show content
     const isFallbackMessage = newsBrief.content.includes('Service temporarily unavailable') || 
                              newsBrief.content.includes('technical issues') ||
                              newsBrief.content.includes('fallback message');
-
-    if (isFallbackMessage) {
-      console.log('⚠️ Generated fallback message due to API issues');
-      console.log('🛑 Skipping Slack delivery to prevent sending error messages');
-      console.log('💡 Bot will retry tomorrow when APIs are available');
-      process.exit(0); // Exit gracefully without sending anything
-    }
-
-    console.log('✨ Formatting news brief with OpenAI...');
-    const summary = await formatNewsWithOpenAI(newsBrief.content);
 
     console.log('\n📋 DAILY BRIEF PREVIEW:');
     console.log('═'.repeat(60));
@@ -49,7 +46,11 @@ async function runBriefBot() {
     console.log('═'.repeat(60));
 
     // Only send to Slack if we have real content (not fallback) and credentials
-    if (SLACK_BOT_TOKEN && SLACK_CHANNEL_ID) {
+    if (isFallbackMessage) {
+      console.log('⚠️ Generated fallback message due to API issues');
+      console.log('🛑 Skipping Slack delivery to prevent sending error messages');
+      console.log('💡 Bot will retry tomorrow when APIs are available');
+    } else if (SLACK_BOT_TOKEN && SLACK_CHANNEL_ID) {
       console.log('\n📤 Sending to Slack...');
       await postToSlack(summary);
       console.log('✅ Successfully sent to Slack!');
@@ -57,9 +58,6 @@ async function runBriefBot() {
       console.log('\n📋 Slack credentials not configured - displaying newsletter only');
     }
 
-    // Detect portfolio mentions for stats
-    const portfolioMentions = await detectPortfolioMentionsInText(newsBrief.content, PANTERA_PORTFOLIO_COMPANIES);
-    
     console.log(`\n📊 Final stats: ${summary.length} char brief generated at ${newsBrief.generatedAt}`);
     if (portfolioMentions.length > 0) {
       const companies = portfolioMentions.map(m => m.company);
