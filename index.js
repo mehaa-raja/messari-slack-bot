@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { scrapeMessariNews } from './lib/scraper.js';
+import { generateNewsWithMessariAI } from './lib/scraper.js';
 import { formatNewsWithOpenAI } from './lib/openai.js';
 import { detectPortfolioMentionsInText, PANTERA_PORTFOLIO_COMPANIES } from './lib/filter.js';
 import { postToSlack } from './slack.js';
@@ -21,7 +21,7 @@ async function runBriefBot() {
     
     console.log('📰 Generating comprehensive crypto news brief...');
     
-    const newsBrief = await scrapeMessariNews();
+    const newsBrief = await generateNewsWithMessariAI();
     
     if (!newsBrief || !newsBrief.content) {
       console.error('❌ Failed to generate news brief');
